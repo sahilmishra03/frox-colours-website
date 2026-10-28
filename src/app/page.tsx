@@ -1,69 +1,264 @@
-import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Barricade,
+  Cube,
+  Eyedropper,
+  Flask,
+  Package,
+  PuzzlePiece,
+  Sneaker,
+  Swatches,
+  TShirt,
+  Tag,
+} from "@phosphor-icons/react/ssr";
+import { CategoryCard } from "@/components/category-card";
+import { ColourShoot } from "@/components/colour-shoot";
+import { ContactBlock } from "@/components/contact-block";
+import { Faq, FaqJsonLd } from "@/components/faq";
+import { Reveal } from "@/components/reveal";
+import { CtaBand, SectionHeading } from "@/components/sections";
+import { TaglineReveal } from "@/components/tagline-reveal";
+import { CompanyFacts, RatingsReviews, TrustStrip } from "@/components/trust";
+import { buttonPrimary, buttonSecondary, container, eyebrow, textLink } from "@/components/ui";
+import { categories, productLineCount } from "@/data/products";
+
+const benefits = [
+  {
+    Icon: Eyedropper,
+    title: "Approve the shade on a sample",
+    text: "Every order starts with a physical sample, so the colour is signed off in your own process and not on a screen.",
+  },
+  {
+    Icon: Swatches,
+    title: "25 named shades on one card",
+    text: "Order by shade name across greens, yellows, oranges, reds, pinks and magentas.",
+  },
+  {
+    Icon: Package,
+    title: "Eight categories from one supplier",
+    text: "Pigments, toners, dyes, printing inks, paints and reflective coatings on a single purchase order.",
+  },
+  {
+    Icon: Flask,
+    title: "Grades for your process",
+    text: "Lines for masterbatch, PVC, plastisol and screen printing, with technical data sheets on request.",
+  },
+];
+
+const applications = [
+  { Icon: Cube, title: "Plastics and masterbatch", text: "Moulded parts, films and colour compounds.", href: "/products/fluorescent-pigments" },
+  { Icon: TShirt, title: "Garment and textile print", text: "Screen printing and plastisol work on fabric.", href: "/products/printing-inks" },
+  { Icon: Barricade, title: "Safety and signage", text: "High visibility marking and signboards.", href: "/products/fluorescent-paints" },
+  { Icon: Tag, title: "Packaging and labels", text: "Cartons, stickers and printed labels.", href: "/products/printing-inks" },
+  { Icon: PuzzlePiece, title: "Toys and stationery", text: "Bright colour for consumer goods.", href: "/products/pigments" },
+  { Icon: Sneaker, title: "PVC and footwear goods", text: "Printing and colouring on PVC surfaces.", href: "/products/printing-inks" },
+];
+
+const steps = [
+  {
+    title: "Share your requirement",
+    text: "Tell us the product line, shade, application and the quantity you expect to order.",
+  },
+  {
+    title: "Approve a physical sample",
+    text: "Test the sample on your own line. If the result needs adjusting, we suggest the closest grade or shade.",
+  },
+  {
+    title: "Receive bulk supply",
+    text: "Your order is packed and dispatched against the sample you approved, with documents on request.",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      {/* 1. Hero */}
+      <section className="bg-white pt-24">
+        <div className={`${container} grid gap-12 pb-16 pt-12 lg:grid-cols-12 lg:items-center`}>
+          <div className="lg:col-span-6">
+            <p className={`${eyebrow} animate-fade-up`}>Manufacturer and supplier of fluorescent colourants</p>
+            <h1 className="hero-heading mt-4 max-w-[680px] animate-fade-up text-4xl font-semibold tracking-tight [animation-delay:80ms] sm:text-5xl xl:text-6xl">
+              Fluorescent pigments <br className="hidden sm:block" />
+              for plastics, print and paint
+            </h1>
+            <p className="mt-6 max-w-[680px] animate-fade-up text-lg text-muted [animation-delay:160ms]">
+              Daylight fluorescent pigments, toners, dyes, printing inks, paints and reflective coatings across{" "}
+              {categories.length} product categories. Approve a physical sample before you order in bulk.
+            </p>
+            <div className="mt-8 flex animate-fade-up flex-col gap-3 [animation-delay:240ms] sm:flex-row">
+              <Link href="/enquiry" className={buttonPrimary}>
+                Request a sample
+                <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+              <Link href="/products" className={buttonSecondary}>
+                View products
+              </Link>
+            </div>
+          </div>
+          <div className="animate-pop-in [animation-delay:200ms] lg:col-span-6">
+            <ColourShoot />
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+      </section>
+
+      {/* 2. Achievements and trust, directly under the hero */}
+      <TrustStrip />
+
+      {/* 3. Products */}
+      <section className="py-24" aria-labelledby="range-title">
+        <div className={container}>
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <Reveal>
+              <p className={eyebrow}>Our products</p>
+              <h2 id="range-title" className="mt-3 max-w-[680px] text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+                {categories.length} categories, {productLineCount} product lines
+              </h2>
+            </Reveal>
+            <div className="flex flex-wrap gap-6">
+              <Link href="/shades" className={textLink}>
+                Shade card
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+              <Link href="/products" className={textLink}>
+                All products
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+          <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {categories.map((c, i) => (
+              <Reveal as="li" key={c.slug} delay={(i % 4) * 80}>
+                <CategoryCard category={c} />
+              </Reveal>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* 4. Company details */}
+      <div className="border-t border-line">
+        <CompanyFacts />
+      </div>
+
+      {/* 5. Why choose us */}
+      <section className="border-t border-line bg-surface py-24" aria-labelledby="benefits-title">
+        <div className={container}>
+          <Reveal>
+            <p className={eyebrow}>Why buyers choose Frox Colours</p>
+            <h2 id="benefits-title" className="mt-3 max-w-[680px] text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Fewer rejected batches, because the shade is agreed first
+            </h2>
+          </Reveal>
+          <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {benefits.map(({ Icon, title, text }, i) => (
+              <Reveal as="li" key={title} delay={i * 80} className="rounded-2xl border border-line bg-white p-6">
+                <span className="grid size-10 place-items-center rounded-lg bg-surface text-navy">
+                  <Icon size={22} aria-hidden="true" />
+                </span>
+                <h3 className="mt-6 text-lg font-semibold tracking-tight text-ink">{title}</h3>
+                <p className="mt-2 text-sm text-muted">{text}</p>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* 6. Ratings and reviews */}
+      <RatingsReviews />
+
+      {/* 7. Applications */}
+      <section className="py-24" aria-labelledby="apps-title">
+        <div className={container}>
+          <Reveal>
+            <SectionHeading
+              kicker="Applications"
+              title="Where our products are used"
+              text="Tell us your end product and we will point you to the right line."
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </Reveal>
+          <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {applications.map(({ Icon, title, text, href }, i) => (
+              <Reveal as="li" key={title} delay={(i % 3) * 80}>
+                <Link
+                  href={href}
+                  className="group flex h-full items-start gap-4 rounded-2xl border border-line bg-white p-6 transition-[border-color,transform] duration-500 ease-brand hover:-translate-y-1 hover:border-ink/20 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+                >
+                  <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-surface text-navy">
+                    <Icon size={22} aria-hidden="true" />
+                  </span>
+                  <span className="flex-1">
+                    <span className="block text-base font-semibold text-ink">{title}</span>
+                    <span className="mt-1 block text-sm text-muted">{text}</span>
+                  </span>
+                  <ArrowRight
+                    size={18}
+                    aria-hidden="true"
+                    className="mt-1 text-muted transition-transform duration-500 ease-brand group-hover:translate-x-1"
+                  />
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* 8. How it works */}
+      <section className="border-y border-line bg-surface py-24" aria-labelledby="how-title">
+        <div className={container}>
+          <Reveal>
+            <p className={eyebrow}>How it works</p>
+            <h2 id="how-title" className="mt-3 max-w-[680px] text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              From enquiry to bulk supply in three steps
+            </h2>
+          </Reveal>
+          <ol className="mt-12 grid gap-4 md:grid-cols-3">
+            {steps.map((s, i) => (
+              <Reveal as="li" key={s.title} delay={i * 100} className="rounded-2xl border border-line bg-white p-6">
+                <span className="grid size-10 place-items-center rounded-lg bg-navy font-mono text-sm font-semibold text-white">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-6 text-lg font-semibold tracking-tight text-ink">{s.title}</h3>
+                <p className="mt-2 text-base text-muted">{s.text}</p>
+              </Reveal>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* 9. Tagline reveal (skill B11) */}
+      <section className="py-24" aria-label="Our promise">
+        <div className={container}>
+          <TaglineReveal lines={["The colour you approve on a sample", "is the colour you receive in bulk."]} />
+        </div>
+      </section>
+
+      {/* 10. FAQ */}
+      <section className="border-t border-line bg-surface py-24" aria-labelledby="faq-title">
+        <div className={`${container} grid gap-12 lg:grid-cols-12`}>
+          <Reveal className="lg:col-span-4">
+            <p className={eyebrow}>Questions</p>
+            <h2 id="faq-title" className="mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Frequently asked questions
+            </h2>
+            <p className="mt-4 text-base text-muted">
+              Need something not covered here?{" "}
+              <Link href="/enquiry" className={textLink}>
+                Ask our team
+              </Link>
+            </p>
+          </Reveal>
+          <Reveal className="lg:col-span-8" delay={80}>
+            <Faq />
+          </Reveal>
+        </div>
+        <FaqJsonLd />
+      </section>
+
+      {/* 11. Contact */}
+      <ContactBlock />
+
+      <CtaBand />
+    </>
   );
 }

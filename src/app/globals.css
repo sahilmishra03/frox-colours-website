@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
+/*
+  Frox Colours design tokens.
+  Light, formal theme. Surfaces are flat (no background gradients).
+  Fluorescent colour is reserved for products, swatches and small accents.
+*/
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0a0a0a;
 }
 
 @theme inline {
@@ -12,15 +17,184 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  /* Brand */
+  --color-navy: #132a45;
+  --color-navy-deep: #0d1f34;
+  --color-ink: #0a0a0a;
+  --color-muted: #5b5f66;
+  --color-subtle: #8a8f96;
+  --color-line: #e6e6e3;
+  --color-surface: #f6f6f4;
+  --color-surface-2: #efefec;
+  --color-uv: #131209;
+  --color-glow: #00f548;
+
+  /* Motion: weighted deceleration (skill B7) */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-drift: drift 7s var(--ease-brand) infinite alternate;
+  --animate-marquee: marquee 48s linear infinite;
+  --animate-pop-in: pop-in 700ms var(--ease-brand) both;
+  --animate-fade-up: fade-up 600ms var(--ease-brand) both;
+
+  @keyframes drift {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translate3d(var(--dx, 8px), var(--dy, -24px), 0) scale(0.8);
+      opacity: 0.35;
+    }
   }
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 24px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p,
+li,
+dd {
+  text-wrap: pretty;
+}
+
+/* Hero heading: the one place a gradient is allowed, on text only (skill B5). */
+.hero-heading {
+  background-image: linear-gradient(90deg, #000000, #666666);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Scroll reveal (skill B7): rise 32px and fade in, once. */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 32px, 0);
+  transition:
+    opacity 700ms var(--ease-brand),
+    transform 700ms var(--ease-brand);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal="shown"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Tagline words (skill B11): muted until they cross the trigger line. */
+.tagline-word {
+  opacity: 0.3;
+  transition: opacity 600ms var(--ease-brand);
+}
+
+.tagline-word[data-active="true"] {
+  opacity: 1;
+}
+
+/* Swatch fan mockup: cards open further on hover or when data-open is set. */
+.fan-card {
+  transform-box: view-box;
+  transform-origin: 120px 204px;
+  transform: rotate(calc(var(--a) * 0.45));
+  transition: transform 700ms var(--ease-brand);
+}
+
+.group:hover .fan-card,
+[data-open="true"] .fan-card {
+  transform: rotate(var(--a));
+}
+
+/* Rating bars grow with transform only once their section is revealed. */
+.rating-bar {
+  transform: scaleX(0);
+  transition: transform 900ms var(--ease-brand) 200ms;
+}
+
+[data-reveal="shown"] .rating-bar {
+  transform: scaleX(var(--v));
+}
+
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal] {
+    transform: none;
+    transition: opacity 400ms linear;
+  }
+
+  .motion-safe-only {
+    animation: none !important;
+  }
+
+  .tagline-word {
+    opacity: 1;
+  }
+
+  .rating-bar {
+    transform: scaleX(var(--v));
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

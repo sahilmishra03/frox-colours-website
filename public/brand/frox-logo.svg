@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Frox Colours">
+  <circle cx="50" cy="50" r="44.6" fill="none" stroke="#E0502F" stroke-width="4.8"/>
+  <circle cx="50" cy="50" r="37.4" fill="none" stroke="#E0502F" stroke-width="4.8"/>
+  <path fill="#E0502F" d="M27.7 35.1h22.4v6.6H27.7z"/>
+  <path fill="#E0502F" d="M27.7 47.3h22.4v6.6H37.4v10.7h-9.7z"/>
+  <path fill="#E0502F" d="M73.5 35.1H66.6A14.3 14.3 0 0 0 66.6 63.7H73.5V57.1H66.6A7.7 7.7 0 0 1 66.6 41.7H73.5Z"/>
+</svg>
