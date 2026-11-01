@@ -77,14 +77,13 @@ export default function Home() {
       <section className="bg-white pt-24">
         <div className={`${container} grid gap-12 pb-16 pt-12 lg:grid-cols-12 lg:items-center`}>
           <div className="lg:col-span-6">
-            <p className={`${eyebrow} animate-fade-up`}>Manufacturer and supplier of fluorescent colourants</p>
+            <p className={`${eyebrow} animate-fade-up`}>Manufacturer & IndiaMART TrustSeal Verified Supplier</p>
             <h1 className="hero-heading mt-4 max-w-[680px] animate-fade-up text-4xl font-semibold tracking-tight [animation-delay:80ms] sm:text-5xl xl:text-6xl">
-              Fluorescent pigments <br className="hidden sm:block" />
-              for plastics, print and paint
+              Brilliant daylight <br className="hidden sm:block" />
+              fluorescent pigments & inks
             </h1>
             <p className="mt-6 max-w-[680px] animate-fade-up text-lg text-muted [animation-delay:160ms]">
-              Daylight fluorescent pigments, toners, dyes, printing inks, paints and reflective coatings across{" "}
-              {categories.length} product categories. Approve a physical sample before you order in bulk.
+              Supplying 25 vibrant daylight fluorescent shades across plastics masterbatch, printing inks, paints, dyes, and heat-reflective coatings. Approve a physical sample on your own production line before bulk order.
             </p>
             <div className="mt-8 flex animate-fade-up flex-col gap-3 [animation-delay:240ms] sm:flex-row">
               <Link href="/enquiry" className={buttonPrimary}>
