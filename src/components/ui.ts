@@ -35,6 +35,18 @@ export const textLink = [
 
 export const eyebrow = "text-sm font-medium text-muted";
 
+/** Orange call to action, used once or twice per page. */
+export const buttonAccent = [
+  "inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-5 py-3",
+  "text-base font-semibold text-white",
+  "transition-[background-color,transform] duration-300 ease-brand",
+  "hover:bg-accent-deep active:scale-[0.98]",
+  focusRing,
+].join(" ");
+
+/** Small uppercase label above section headings. */
+export const sectionLabel = "text-xs font-semibold uppercase tracking-[0.14em] text-accent";
+
 export const container = "mx-auto w-full max-w-6xl px-6";
 
 export { focusRing };

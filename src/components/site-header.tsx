@@ -3,17 +3,26 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ArrowRight } from "@phosphor-icons/react";
 import { navLinks } from "@/data/site";
 import { Logo } from "./logo";
-import { buttonPrimary, buttonSmall, focusRing } from "./ui";
+import { focusRing } from "./ui";
 
 function isActive(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`);
+  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
+const allLinks = [{ href: "/", label: "Home" }, ...navLinks.filter((l) => l.href !== "/enquiry")];
+
+/**
+ * Floating glass navigation bar. Narrows slightly once the page scrolls,
+ * hides while scrolling down and returns when scrolling up.
+ */
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   // Close the menu after navigation.
   const [lastPath, setLastPath] = useState(pathname);
@@ -23,38 +32,58 @@ export function SiteHeader() {
   }
 
   useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      setHidden(y > 320 && y > lastY + 4);
+      if (Math.abs(y - lastY) > 4) lastY = y;
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
-    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  const tucked = hidden && !open;
+
   return (
-    <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
+    <header
+      className={`fixed inset-x-0 top-3 z-50 px-3 transition-transform duration-500 ease-brand md:top-4 md:px-4 ${
+        tucked ? "-translate-y-[calc(100%+1.5rem)]" : "translate-y-0"
+      }`}
+      onFocusCapture={() => setHidden(false)}
+    >
       <nav
         aria-label="Main"
-        className="relative z-50 flex w-full max-w-3xl items-center justify-between gap-6 rounded-2xl border border-line bg-white/80 p-2 pl-4 backdrop-blur-md md:w-auto"
+        className={`mx-auto flex items-center justify-between gap-4 rounded-2xl border p-1.5 pl-3 shadow-[inset_0_1px_0_rgb(255_255_255/0.7)] backdrop-blur-xl backdrop-saturate-150 transition-[max-width,background-color,box-shadow,border-color] duration-500 ease-brand ${
+          scrolled || open
+            ? "max-w-5xl border-navy/10 bg-white/80 shadow-lg shadow-navy/10"
+            : "max-w-6xl border-white/50 bg-white/65 shadow-md shadow-black/10"
+        }`}
       >
         <Link href="/" className={`rounded-lg ${focusRing}`} aria-label="Frox Colours home">
           <Logo />
         </Link>
 
-        <ul className="hidden items-center gap-1 md:flex">
-          {navLinks.map((link) => {
+        <ul className="hidden items-center gap-0.5 rounded-xl bg-navy/[0.04] p-1 md:flex">
+          {allLinks.map((link) => {
             const active = isActive(pathname, link.href);
             return (
               <li key={link.href}>
                 <Link
                   href={link.href}
                   aria-current={active ? "page" : undefined}
-                  className={`block rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-300 ease-brand ${focusRing} ${
-                    active ? "bg-surface-2 text-ink" : "text-muted hover:bg-surface hover:text-ink"
+                  className={`block rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-300 ease-brand ${focusRing} ${
+                    active ? "bg-white text-navy shadow-sm ring-1 ring-navy/10" : "text-navy/70 hover:text-navy"
                   }`}
                 >
                   {link.label}
@@ -64,16 +93,22 @@ export function SiteHeader() {
           })}
         </ul>
 
-        <div className="flex items-center gap-2">
-          {/* Wrapper controls visibility so `hidden` never fights the button's own `inline-flex`. */}
-          <span className="hidden md:block">
-            <Link href="/enquiry" className={buttonSmall}>
-              Request a sample
-            </Link>
-          </span>
+        <div className="flex items-center gap-1.5">
+          <Link
+            href="/enquiry"
+            className={`group hidden items-center gap-1.5 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-accent/30 transition-colors duration-300 ease-brand hover:bg-accent-deep md:inline-flex ${focusRing}`}
+          >
+            Get a quote
+            <ArrowRight
+              size={16}
+              weight="bold"
+              aria-hidden="true"
+              className="transition-transform duration-300 ease-brand group-hover:translate-x-0.5"
+            />
+          </Link>
           <button
             type="button"
-            className={`relative inline-flex size-10 items-center justify-center rounded-lg text-ink transition-colors duration-300 ease-brand hover:bg-surface active:scale-[0.98] md:hidden ${focusRing}`}
+            className={`relative inline-flex size-11 items-center justify-center rounded-xl text-navy transition-colors duration-300 ease-brand hover:bg-navy/5 md:hidden ${focusRing}`}
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -93,31 +128,25 @@ export function SiteHeader() {
         </div>
       </nav>
 
-      {/* Mobile menu: full height panel with staggered links (skill B7). */}
+      {/* Mobile menu: glass panel under the bar */}
       <div
         id="mobile-menu"
-        className={`fixed inset-0 z-40 bg-white/95 backdrop-blur-xl transition-opacity duration-500 ease-brand md:hidden ${
-          open ? "opacity-100" : "pointer-events-none opacity-0"
+        className={`mx-auto mt-2 max-w-6xl overflow-hidden rounded-2xl border border-navy/10 bg-white/90 shadow-lg backdrop-blur-xl transition-[opacity,transform] duration-300 ease-brand md:hidden ${
+          open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
         }`}
         aria-hidden={!open}
         inert={!open}
       >
-        <ul className="flex h-full flex-col justify-center gap-2 px-6">
-          {[{ href: "/", label: "Home" }, ...navLinks].map((link, i) => {
-            const active = link.href === "/" ? pathname === "/" : isActive(pathname, link.href);
+        <ul className="flex flex-col p-2">
+          {allLinks.map((link) => {
+            const active = isActive(pathname, link.href);
             return (
-              <li
-                key={link.href}
-                className={`transition-[opacity,transform] duration-500 ease-brand ${
-                  open ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-                }`}
-                style={{ transitionDelay: open ? `${Math.min(i * 60, 400)}ms` : "0ms" }}
-              >
+              <li key={link.href}>
                 <Link
                   href={link.href}
                   aria-current={active ? "page" : undefined}
-                  className={`block rounded-lg py-2 text-4xl font-semibold tracking-tight ${focusRing} ${
-                    active ? "text-ink" : "text-subtle"
+                  className={`flex items-center justify-between rounded-xl px-4 py-3 text-base font-medium ${focusRing} ${
+                    active ? "bg-navy text-white" : "text-navy hover:bg-navy/5"
                   }`}
                 >
                   {link.label}
@@ -125,14 +154,13 @@ export function SiteHeader() {
               </li>
             );
           })}
-          <li
-            className={`pt-6 transition-[opacity,transform] duration-500 ease-brand ${
-              open ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-            }`}
-            style={{ transitionDelay: open ? "300ms" : "0ms" }}
-          >
-            <Link href="/enquiry" className={buttonPrimary}>
-              Request a sample
+          <li className="p-2">
+            <Link
+              href="/enquiry"
+              className={`flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-base font-semibold text-white ${focusRing}`}
+            >
+              Get a quote
+              <ArrowRight size={18} weight="bold" aria-hidden="true" />
             </Link>
           </li>
         </ul>

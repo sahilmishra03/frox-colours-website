@@ -39,10 +39,15 @@ export const shareLinks = [
   },
 ];
 
-export function ShareRow({ tone = "light" }: { tone?: "light" | "muted" }) {
+export function ShareRow({ tone = "light" }: { tone?: "light" | "muted" | "dark" }) {
+  const dark = tone === "dark";
   return (
     <div className="flex items-center gap-3">
-      <span className={`inline-flex items-center gap-2 text-sm font-semibold ${tone === "light" ? "text-ink" : "text-muted"}`}>
+      <span
+        className={`inline-flex items-center gap-2 text-sm font-semibold ${
+          dark ? "text-white" : tone === "light" ? "text-ink" : "text-muted"
+        }`}
+      >
         <ShareNetwork size={18} aria-hidden="true" />
         Share us
       </span>
@@ -54,7 +59,11 @@ export function ShareRow({ tone = "light" }: { tone?: "light" | "muted" }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={label}
-              className={`grid size-10 place-items-center rounded-lg text-muted transition-[background-color,color,transform] duration-300 ease-brand hover:bg-white hover:text-navy active:scale-[0.98] ${focusRing}`}
+              className={`grid size-10 place-items-center rounded-lg transition-[background-color,color,transform] duration-300 ease-brand active:scale-[0.98] ${
+                dark
+                  ? "text-white/65 hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  : `text-muted hover:bg-white hover:text-navy ${focusRing}`
+              }`}
             >
               <Icon size={20} weight="fill" aria-hidden="true" />
             </a>

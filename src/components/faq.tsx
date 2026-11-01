@@ -1,4 +1,4 @@
-import { Plus } from "@phosphor-icons/react/ssr";
+import { CaretDown } from "@phosphor-icons/react/ssr";
 
 export type FaqItem = { q: string; a: string };
 
@@ -39,18 +39,19 @@ export const faqs: FaqItem[] = [
 
 export function Faq({ items = faqs }: { items?: FaqItem[] }) {
   return (
-    <div className="divide-y divide-line rounded-2xl border border-line bg-white">
+    <div className="space-y-4">
       {items.map((item) => (
-        <details key={item.q} className="group px-6">
-          <summary className="flex cursor-pointer items-center justify-between gap-6 py-6 text-base font-semibold text-ink outline-none focus-visible:rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy">
+        <details
+          key={item.q}
+          className="group rounded-2xl border border-line bg-white px-5 transition-[border-color,box-shadow] duration-300 ease-brand open:border-navy/20 open:shadow-sm"
+        >
+          <summary className="flex cursor-pointer items-center justify-between gap-6 py-5 text-base font-semibold text-navy outline-none focus-visible:rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy">
             {item.q}
-            <Plus
-              size={20}
-              aria-hidden="true"
-              className="shrink-0 text-muted transition-transform duration-500 ease-brand group-open:rotate-45"
-            />
+            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-surface-2 text-navy transition-transform duration-300 ease-brand group-open:rotate-180">
+              <CaretDown size={16} weight="bold" aria-hidden="true" />
+            </span>
           </summary>
-          <p className="-mt-2 pb-6 text-base text-muted group-open:animate-fade-up">{item.a}</p>
+          <p className="-mt-1 pb-5 text-base text-muted group-open:animate-fade-up">{item.a}</p>
         </details>
       ))}
     </div>

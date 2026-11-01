@@ -29,13 +29,18 @@ export function LogoMark({ className = "size-9", color = LOGO_COLOR }: { classNa
   );
 }
 
-export function Logo() {
+export function Logo({ tone = "dark" }: { tone?: "dark" | "light" }) {
+  const light = tone === "light";
   return (
-    <span className="inline-flex items-center gap-2">
-      <LogoMark />
+    <span className="inline-flex items-center gap-2.5">
+      <LogoMark className="size-10" />
       <span className="leading-none">
-        <span className="block text-base font-semibold tracking-tight text-ink">Frox Colours</span>
-        <span className="mt-0.5 block text-xs text-muted">Fluorescent pigments</span>
+        <span className={`block text-lg font-bold tracking-tight ${light ? "text-white" : "text-navy"}`}>
+          Frox Colours
+        </span>
+        <span className={`mt-1 block text-[11px] uppercase tracking-[0.12em] ${light ? "text-white/60" : "text-muted"}`}>
+          Fluorescent pigments
+        </span>
       </span>
     </span>
   );
